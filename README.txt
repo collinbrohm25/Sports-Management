@@ -37,7 +37,7 @@ attendance and predict future crowd sizes based on historical data.
 Team Efficiency: Rank teams based on how efficiently they score points
 compared to their opponents in different sports.
 Preliminary EER Diagram:
-Our preliminary Entity-Relationship (ER) diagram will include the following
+Our preliminary Entity-Relationship (ER) diagram will EXCLUDE the following
 entities:
 
 Players: Each player will have a unique ID, name, position, and stats
