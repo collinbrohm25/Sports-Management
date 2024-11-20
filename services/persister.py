@@ -10,4 +10,16 @@ class Persister:
         self.host = host
         self.password = password
         self.port = port
+
+    def _connect(database: str, user: str, host: str, password: str, port: int):
+        conn = psycopg2.connect(
+            database = database,
+            user = user,
+            host = host,
+            password = password,
+            port = port)
         
+        cursor = conn.cursor()
+        return cursor
+        
+
