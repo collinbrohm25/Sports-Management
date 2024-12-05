@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 function Home() {
   const [teamName, setTeamName] = useState("");
@@ -17,11 +17,11 @@ function Home() {
     if (week) params.append("week", week);
     console.log(params.toString())
     
-    axios.get(`http://localhost:5000/api/sports?${params.toString()}`, {
-    //     headers: {
-    //       "Content-Type": "application/json",  // No need to add "Origin"
-    //     },
-       })
+    axios.get(`http://127.0.0.1:5000/api/sports?${params.toString()}`, {
+        headers: {
+          "Content-Type": "application/json",  // No need to add "Origin"
+        },
+      })
         .then(response => {
           console.log(response.data);  // Handle success response
         })

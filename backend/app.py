@@ -3,10 +3,11 @@ from flask_cors import CORS
 from sqlalchemy import create_engine, text
 
 app = Flask(__name__)
-CORS(app)  # Allow requests from any origin (you can specify origins if necessary)
+CORS(app)
 
 @app.route('/api/sports', methods=['GET'])
 def get_team_data():
+    print(request.args)
     # Get team name and week from query parameters
     team_name = request.args.get('team', '').lower()  # .lower() ensures case-insensitivity
     week = request.args.get('week')
@@ -16,7 +17,7 @@ def get_team_data():
         return jsonify({"error": "Team name is required"}), 400
 
     # Start building the SQL query
-    query = "SELECT * FROM sports_data WHERE LOWER(team_name) LIKE :team_name"
+    query = "SELECT * FROM game WHERE LOWER(team_name) = home_team_name OR away_team_name"
     params = {"team_name": f"%{team_name}%"}
 
     # If a week is provided, add it to the query
@@ -26,7 +27,7 @@ def get_team_data():
 
     # Assuming you have a valid database connection:
     # Here you need to connect to your database (PostgreSQL, MySQL, etc.)
-    engine = create_engine('postgresql://username:password@localhost:5432/mydatabase')  # Change connection string
+    engine = create_engine('postgresql://postgres:@localhost:5432/sms')  # Change connection string
     with engine.connect() as conn:
         result = conn.execute(text(query), params)
         data = result.fetchall()  # Fetch the result
