@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import ResultList from "./ResultList";
+import "./Home.css";
 
 function Home() {
   const [teamName, setTeamName] = useState("");
@@ -7,43 +9,46 @@ function Home() {
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
+    setResults([]);
 
-    // Build query parameters
-    const params = new URLSearchParams();
-    if (teamName) params.append("team", teamName);
-    if (week) params.append("week", week);
-    console.log(params.toString())
-    
-    axios.get(`http://127.0.0.1:5000/api/sports?${params.toString()}`, {
-        headers: {
-          "Content-Type": "application/json",  // No need to add "Origin"
-        },
-      })
-        .then(response => {
-          console.log(response.data);  // Handle success response
-        })
-        .catch(error => {
-          console.error("Error:", error);  // Handle error response
-        });
+    try {
+      const params = new URLSearchParams();
+      if (teamName) params.append("team", teamName);
+      if (week) params.append("week", week);
+
+      const response = await axios.get(
+        `http://localhost:5000/api/sports?${params.toString()}`
+      );
+      setResults(response.data);
+    } catch (err) {
+      console.error("Error:", err);
+      setError("Failed to fetch data. Please try again.");
+    }
   };
 
   return (
-    <div>
-      <h2>Search Sports Data</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="home-container">
+      <div className="form-header">
+        <h2>Search Sports Data</h2>
+      </div>
+      <form className="form-section" onSubmit={handleSubmit}>
+        <div className="input-group">
+          <label htmlFor="teamName">Team Name</label>
           <input
+            id="teamName"
             type="text"
             value={teamName}
             onChange={(e) => setTeamName(e.target.value)}
             placeholder="Enter team name"
           />
         </div>
-        <div>
+        <div className="input-group">
+          <label htmlFor="week">Week Number</label>
           <input
+            id="week"
             type="number"
             value={week}
             onChange={(e) => setWeek(e.target.value)}
@@ -51,19 +56,20 @@ function Home() {
             min="1"
           />
         </div>
-        <button type="submit">Search</button>
+        <div className="btn-group">
+          <button type="submit">Search</button>
+        </div>
       </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && (
+        <div className="error-message">
+          <p>{error}</p>
+        </div>
+      )}
 
-      <h3>Results</h3>
-      <ul>
-        {results.map((item, index) => (
-          <li key={index}>
-            {item.name} - Week {item.week}: {item.details}
-          </li>
-        ))}
-      </ul>
+      <div className="results-section">
+        <ResultList results={results} />
+      </div>
     </div>
   );
 }
