@@ -7,15 +7,15 @@
     "port": 5432,
     "tables": {
         "week": {
-            "season_id": "PRIMARY KEY TEXT",
+            "season_id": "TEXT PRIMARY KEY ",
             "year": "TEXT",
             "week_id": "TEXT",
-            "week_num": "FOREIGN KEY TEXT"
+            "week_num": "TEXT"
         },
         "game": {
-            "game_id": "PRIMARY KEY TEXT",
-            "season_id": "FOREIGN KEY TEXT",
-            "week_id": "FOREIGN KEY TEXT",
+            "game_id": "TEXT PRIMARY KEY",
+            "season_id": "TEXT",
+            "week_id": "TEXT",
             "status": "TEXT",
             "scheduled": "TIMESTAMP",
             "conference_game": "BOOLEAN",
@@ -36,7 +36,7 @@
             "away_points": "INTEGER"
         },
         "venue": {
-            "venue_id": "PRIMARY KEY TEXT",
+            "venue_id": "Text PRIMARY KEY",
             "venue_name": "TEXT",
             "venue_city": "TEXT",
             "venue_state": "TEXT",
@@ -46,7 +46,7 @@
         },
         "weather": {
             "id": "SERIAL PRIMARY KEY",
-            "game_id": "FOREIGN KEY TEXT",
+            "game_id": "TEXT",
             "condition": "TEXT",
             "humidity": "INTEGER",
             "temp": "INTEGER",
@@ -54,13 +54,13 @@
             "wind_direction": "TEXT"
         },
         "weeks": {
-            "season_id": "FOREIGN KEY TEXT",
-            "week_id": "PRIMARY KEY TEXT",
+            "season_id": "TEXT",
+            "week_id": "TEXT",
             "sequence": "INTEGER",
             "title": "TEXT"
         },
         "season": {
-            "season_id": "PRIMARY KEY TEXT",
+            "season_id": "TEXT",
             "year": "TEXT",
             "type": "TEXT",
             "name": "TEXT"

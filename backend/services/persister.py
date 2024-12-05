@@ -33,7 +33,7 @@ class Persister:
         #TODO: Move the credentials to a config file.
         conn = self._connect('sms', 'collinbrohm', 'localhost', 'godawgs', 5432)
         cursor = conn.cursor()
-        # TODO: Clean this up, very nasty. Move to seperate functions?
+        #TODO: Clean this up, very nasty. Move to seperate functions?
         try: 
             week_template = 'INSERT INTO week VALUES(%s, %s, %s, %s)'
             cursor.executemany(week_template, week_records)
@@ -63,7 +63,7 @@ class Persister:
         except Exception as e:
             print(f'Error persisting weeks data because of: {e}')
         try:
-            weather_template = 'INSERT INTO weather VALUES(%s, %s, %s, %s, %s, %s)'
+            weather_template = 'INSERT INTO weather (game_id, condition, humidity, temp, wind_speed, wind_direction) VALUES(%s, %s, %s, %s, %s, %s)'
             cursor.executemany(weather_template, weather_records)
             conn.commit()
             print('Successfully inserted weather data!')
