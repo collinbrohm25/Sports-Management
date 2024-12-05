@@ -2,12 +2,17 @@
 
 from services.loader import Loader
 from services.transformer import Transformer
+from services.persister import Persister
 
 def main():
     loader = Loader()
-    loaded_data = loader.load_current_week()
+    week_data = loader.load_current_week()
+    season_data = loader.load_season()
     transformer = Transformer()
-    transformer.transform_week(loaded_data)
+    transformed_data = transformer.transform(week_data, season_data)
+    persister = Persister('sms', '127.0.0.1', 'postgres', '', 5432)
+    persister.persist(transformed_data)
+
 
 if __name__ == '__main__':
     main()

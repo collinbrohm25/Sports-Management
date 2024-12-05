@@ -1,0 +1,118 @@
+/* EditProfile.css */
+
+.edit-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+  }
+  
+  .edit-profile-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .edit-profile-form h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  .edit-profile-form input[type="text"],
+  .edit-profile-form input[type="password"],
+  .edit-profile-form input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+  }
+  
+  .edit-profile-form input[type="text"]:focus,
+  .edit-profile-form input[type="password"]:focus,
+  .edit-profile-form input[type="email"]:focus {
+    border-color: #6c63ff;
+    outline: none;
+  }
+  
+  .edit-profile-form button[type="submit"],
+  .edit-profile-form button[type="button"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 1rem;
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .edit-profile-form button[type="submit"]:hover,
+  .edit-profile-form button[type="button"]:hover {
+    background-color: #5547d8;
+  }
+  
+  .promotions-container {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 10px 0;
+    border-top: 1px solid #ccc;
+  }
+  
+  .promotions-container input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .promotions-container label {
+    font-size: 1rem;
+    color: #333;
+    margin-left: -480px;
+  }
+  
+  .payment-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .payment-card input[type="text"] {
+    flex-grow: 1;
+  }
+  
+  .payment-card button[type="button"] {
+    margin-left: 10px;
+    background-color: #e63946;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .payment-card button[type="button"]:hover {
+    background-color: #d62828;
+  }
+  
+  .error-message {
+    color: #e63946;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .success-message {
+    color: #4CAF50;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  

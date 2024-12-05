@@ -4,12 +4,13 @@ import marshmallow.fields as marsh
 import marshmallow 
 from marshmallow import EXCLUDE
 
-from models.models import Week, InnerWeek, Games, Home, Away, Scoring, Venue
-
+from models.models import (Week, InnerWeek, Games, Home, Away, Scoring, Venue, 
+                           Season, Weeks, Weather, Timezone, Wind, Broadcast,
+                           BigSeason)
 
 class ScoringSchema(marshmallow.Schema):
-    home_points = marsh.Int()
-    away_points = marsh.Int()
+    home_points = marsh.Int(required=False)
+    away_points = marsh.Int(required=False)
 
     class Meta:
         ordered=True
@@ -63,7 +64,57 @@ class VenueSchema(marshmallow.Schema):
     @marshmallow.post_load()
     def make_venue(self, data, **_) -> Venue:
         return Venue(**data)
+    
+class WindSchema(marshmallow.Schema):
+    speed = marsh.Int()
+    direction = marsh.Str(required=False, allow_none=True)
 
+    class Meta:
+        ordered=True
+        unknown = EXCLUDE
+
+    @marshmallow.post_load()
+    def make_wind(self, data, **_) -> Wind:
+        return Wind(**data)
+
+class WeatherSchema(marshmallow.Schema):
+    condition = marsh.Str()
+    humidity = marsh.Int()
+    temp = marsh.Int()
+    wind = marsh.Nested(WindSchema)
+
+    class Meta:
+        ordered=True
+        unknown = EXCLUDE
+
+    @marshmallow.post_load()
+    def make_weather(self, data, **_) -> Weather:
+        return Weather(**data)
+
+class TimezoneSchema(marshmallow.Schema):
+    venue = marsh.Str()
+    home= marsh.Str()
+    away = marsh.Str()
+
+    class Meta:
+        ordered=True
+        unknown = EXCLUDE
+
+    @marshmallow.post_load()
+    def make_timezone(self, data, **_) -> Timezone:
+        return Timezone(**data)
+    
+class BroadcastSchema(marshmallow.Schema):
+    network = marsh.Str()
+
+    class Meta:
+        ordered=True
+        unknown = EXCLUDE
+
+    @marshmallow.post_load()
+    def make_broadcast(self, data, **_) -> Broadcast:
+        return Broadcast(**data)
+    
 class GamesSchema(marshmallow.Schema):
     game_id = marsh.Str(data_key='id')
     status = marsh.Str()
@@ -72,7 +123,10 @@ class GamesSchema(marshmallow.Schema):
     venue = marsh.Nested(VenueSchema)
     home = marsh.Nested(HomeSchema)
     away = marsh.Nested(AwaySchema)
-    scoring = marsh.Nested(ScoringSchema)
+    broadcast = marsh.Nested(BroadcastSchema)
+    timezone = marsh.Nested(TimezoneSchema,data_key='time_zones', required=False, allow_none=True)
+    weather = marsh.Nested(WeatherSchema)
+    scoring = marsh.Nested(ScoringSchema,required=False, allow_none=True)
 
     class Meta:
         ordered=True
@@ -107,3 +161,47 @@ class WeekSchema(marshmallow.Schema):
     @marshmallow.post_load()
     def make_week(self, data, **_) -> Week:
         return Week(**data)
+    
+class WeeksSchema(marshmallow.Schema):
+    week_id = marsh.Str(data_key='id')
+    sequence = marsh.Int()
+    title = marsh.Str()
+    games = marsh.List(marsh.Nested(GamesSchema))
+
+    class Meta:
+        ordered=True
+        unknown = EXCLUDE
+
+    @marshmallow.post_load()
+    def make_weeks(self, data, **_) -> Weeks:
+        return Weeks(**data)
+
+class SeasonSchema(marshmallow.Schema):
+    season_id = marsh.Str(data_key='id')
+    year = marsh.Int()
+    type = marsh.Str()
+    name = marsh.Str()
+
+    class Meta:
+        ordered=True
+        unknown = EXCLUDE
+
+    @marshmallow.post_load()
+    def make_season(self, data, **_) -> Season:
+        return Season(**data)
+    
+class BigSeasonSchema(marshmallow.Schema):
+    season = marsh.Nested(SeasonSchema)
+    weeks = marsh.List(marshmallow.fields.Nested(WeeksSchema))
+
+    class Meta:
+        ordered=True
+        unknown = EXCLUDE
+
+    @marshmallow.post_load()
+    def make_big_season(self, data, **_) -> BigSeason:
+        return BigSeason(**data)
+
+
+
+
