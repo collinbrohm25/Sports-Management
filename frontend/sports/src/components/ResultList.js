@@ -1,34 +1,39 @@
 import React from "react";
-import "./ResultList.css";
 
-function ResultList({ results }) {
+function ResultList({ results, venues }) {
   if (!results || results.length === 0) {
     return <p>No results to display.</p>;
   }
 
+  // Create a venue lookup map
+  const venueLookup = venues ? venues.reduce((acc, venue) => {
+    acc[venue.venue_id] = `${venue.venue_name}, ${venue.venue_city}, ${venue.venue_state}`;
+    return acc;
+  }, {}) : {};
+
   return (
     <div className="result-list-container">
-      <h3>Match Results and Weather Conditions</h3>
-      <table className="results-table">
+      <h3 className="text-xl font-bold mb-4">Match Results</h3>
+      <table className="w-full border-collapse">
         <thead>
-          <tr>
-            <th>Home Team</th>
-            <th>Away Team</th>
-            <th>Venue</th>
-            <th>Home Points</th>
-            <th>Away Points</th>
-            <th>Weather</th>
+          <tr className="bg-gray-100">
+            <th className="p-2 border">Home Team</th>
+            <th className="p-2 border">Away Team</th>
+            <th className="p-2 border">Venue</th>
+            <th className="p-2 border">Home Points</th>
+            <th className="p-2 border">Away Points</th>
           </tr>
         </thead>
         <tbody>
           {results.map((result, index) => (
-            <tr key={index}>
-              <td>{result.home_team_name}</td>
-              <td>{result.away_team_name}</td>
-              <td>{result.venue}</td>
-              <td>{result.home_points}</td>
-              <td>{result.away_points}</td>
-              <td>{result.weather}</td>
+            <tr key={index} className="hover:bg-gray-50">
+              <td className="p-2 border">{result.home_team_name}</td>
+              <td className="p-2 border">{result.away_team_name}</td>
+              <td className="p-2 border">
+                {venueLookup[result.venue_id] || 'No venue info'}
+              </td>
+              <td className="p-2 border text-center">{result.home_points}</td>
+              <td className="p-2 border text-center">{result.away_points}</td>
             </tr>
           ))}
         </tbody>

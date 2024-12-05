@@ -18,13 +18,14 @@ function Home() {
       const params = new URLSearchParams();
       if (teamName) params.append("team", teamName);
       if (week) params.append("week", week);
-
+    console.log(params.toString())
       const response = await axios.get(
-        `http://localhost:5000/api/sports?${params.toString()}`
-      );
+        `http://127.0.0.1:5000/api/sports?${params.toString()}`, {
+            });
+      
       setResults(response.data);
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error:", err.toString());
       setError("Failed to fetch data. Please try again.");
     }
   };
