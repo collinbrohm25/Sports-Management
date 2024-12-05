@@ -1,12 +1,13 @@
 """Module containing models for incoming data from SportRadar."""
 
+from typing import Optional
 from dataclasses import dataclass
 from datetime import datetime
 
 @dataclass(frozen=True)
 class Scoring:
-    home_points: int
-    away_points: int
+    home_points: Optional[int] = None
+    away_points: Optional[int] = None
 
 @dataclass(frozen=True)
 class Away:
@@ -27,10 +28,32 @@ class Venue:
     venue_id: str
     name: str
     city: str
-    state: str
     country: str
     surface: str
     roof_type: str
+    state: Optional[str] = None
+
+@dataclass(frozen=True)
+class Wind:
+    speed: int
+    direction: Optional[str] = None
+
+@dataclass(frozen=True)
+class Weather:
+    humidity: int
+    temp: int
+    wind: Optional[Wind]
+    condition: Optional[str] = None
+
+@dataclass(frozen=True)
+class Timezone:
+    venue: Optional[str]
+    home: Optional[str]
+    away: Optional[str]
+
+@dataclass(frozen=True)
+class Broadcast:
+    network: str
 
 @dataclass(frozen=True)
 class Games:
@@ -42,7 +65,10 @@ class Games:
     venue: Venue
     home: Home
     away: Away
-    scoring: Scoring
+    broadcast: Optional[Broadcast] = None
+    timezone: Optional[Timezone] = None
+    weather: Optional[Weather] = None
+    scoring: Optional[Scoring] = None
 
 @dataclass(frozen=True)
 class InnerWeek:
@@ -54,3 +80,23 @@ class Week:
     week_id: str
     year: str
     week: InnerWeek
+
+@dataclass(frozen=True)
+class Weeks:
+    week_id: str
+    sequence: int
+    title: str
+    games: list[Games]
+
+@dataclass(frozen=True)
+class Season:
+    season_id: str
+    year: int
+    type: str
+    name: str 
+
+
+@dataclass
+class BigSeason:
+    season: Season
+    weeks: list[Weeks]
