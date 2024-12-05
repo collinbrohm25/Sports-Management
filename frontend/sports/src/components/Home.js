@@ -33,7 +33,7 @@ function Home() {
   return (
     <div className="home-container">
       <div className="form-header">
-        <h2>Search Sports Data</h2>
+        <h2>Search for Team Analytics</h2>
       </div>
       <form className="form-section" onSubmit={handleSubmit}>
         <div className="input-group">
