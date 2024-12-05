@@ -26,7 +26,6 @@ class Persister:
     def persist(self, tuple: tuple[WeekDTO, list[GameDTO], SeasonDTO, list[WeeksDTO], list[WeatherDTO], list[VenueDTO]]):
         week_records = list(Transformer.set_week(self, tuple[0]))
         game_records = list(Transformer.set_game(self, tuple[1]))
-        print(game_records)
         season_records = list(Transformer.set_season(self, tuple[2]))
         weeks_records = list(Transformer.set_weeks(self, tuple[3]))
         weather_records = list(Transformer.set_weather(self, tuple[4]))
@@ -71,7 +70,6 @@ class Persister:
         except Exception as e:
             print(f'Error persisting weather data because of: {e}')
         try:
-            print(venue_records)
             venue_template = 'INSERT INTO venue VALUES(%s, %s, %s, %s, %s, %s, %s)'
             cursor.executemany(venue_template, venue_records)
             conn.commit()
