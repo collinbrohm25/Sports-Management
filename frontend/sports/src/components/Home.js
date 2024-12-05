@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./Home.css";
 import ResultList from "./ResultList";
-
+import "./Home.css";
 
 function Home() {
   const [teamName, setTeamName] = useState("");
@@ -10,23 +9,24 @@ function Home() {
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
+    setResults([]);
 
-    const params = new URLSearchParams();
-    if (teamName) params.append("team", teamName);
-    if (week) params.append("week", week);
+    try {
+      const params = new URLSearchParams();
+      if (teamName) params.append("team", teamName);
+      if (week) params.append("week", week);
 
-    axios
-      .get(`http://localhost:5000/api/sports?${params.toString()}`)
-      .then((response) => {
-        setResults(response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        setError("Failed to fetch data. Please try again.");
-      });
+      const response = await axios.get(
+        `http://localhost:5000/api/sports?${params.toString()}`
+      );
+      setResults(response.data);
+    } catch (err) {
+      console.error("Error:", err);
+      setError("Failed to fetch data. Please try again.");
+    }
   };
 
   return (
@@ -67,10 +67,9 @@ function Home() {
         </div>
       )}
 
-<div className="results-section">
-  <ResultList results={results} />
-</div>
-
+      <div className="results-section">
+        <ResultList results={results} />
+      </div>
     </div>
   );
 }
