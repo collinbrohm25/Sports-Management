@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./Home.css";
+import ResultList from "./ResultList";
+
 
 function Home() {
   const [teamName, setTeamName] = useState("");
@@ -65,16 +67,10 @@ function Home() {
         </div>
       )}
 
-      <div className="results-section">
-        <h3>Results</h3>
-        <ul className="results-list">
-          {results.map((item, index) => (
-            <li key={index} className="result-item">
-              {item.name} - Week {item.week}: {item.details}
-            </li>
-          ))}
-        </ul>
-      </div>
+<div className="results-section">
+  <ResultList results={results} />
+</div>
+
     </div>
   );
 }
