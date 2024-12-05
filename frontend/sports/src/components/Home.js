@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import './Home.css';
 
 function Home() {
   const [teamName, setTeamName] = useState("");
@@ -31,7 +32,7 @@ function Home() {
   };
 
   return (
-    <div>
+    <div classname="form-group input">
       <h2>Search Sports Data</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -51,7 +52,7 @@ function Home() {
             min="1"
           />
         </div>
-        <button type="submit">Search</button>
+        <button classname = "btn" type="submit">Search</button>
       </form>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
