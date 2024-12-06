@@ -34,8 +34,8 @@ class GameDTO:
     home_timezone: Optional[str]
     away_timezone: Optional[str]
     broadcast_network: Optional[str]
-    home_points: Optional[int] = None
-    away_points: Optional[int] = None
+    home_points: Optional[int]
+    away_points: Optional[int]
 
 @dataclass
 class VenueDTO:

@@ -6,8 +6,8 @@ from datetime import datetime
 
 @dataclass(frozen=True)
 class Scoring:
-    home_points: Optional[int] = None
-    away_points: Optional[int] = None
+    home_points: Optional[int]
+    away_points: Optional[int]
 
 @dataclass(frozen=True)
 class Away:

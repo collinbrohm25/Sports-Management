@@ -33,13 +33,15 @@ class Transformer:
                 )
         game_data = []
         season_id = season_input.season.season_id
+        print(season_input)
         for game in week_input.week.games:
             if game.scoring is None:
-                away_points = 0
-                home_points = 0
-            else :
-                away_points = game.scoring.away_points
-                home_points = game.scoring.home_points
+                away_points2 = 0
+                home_points2 = 0
+            else:
+                away_points2 = game.scoring.away_points
+                home_points2 = game.scoring.home_points
+            print(game.scoring)
             game_dto = GameDTO(
                 game_id=game.game_id,
                 season_id=season_id,
@@ -56,8 +58,8 @@ class Transformer:
                 away_team_name=game.away.away_team_name,
                 away_team_abbreviation=game.away.away_team_abbreviation,
                 away_team_games_played=game.away.away_team_games_played,
-                home_points=home_points,
-                away_points=away_points,
+                home_points=home_points2,
+                away_points=away_points2,
                 venue_timezone=game.timezone.venue,
                 home_timezone=game.timezone.home,
                 away_timezone=game.timezone.away,
@@ -79,6 +81,12 @@ class Transformer:
             )
             weeks_data.append(weeks_dto)
             for game in week.games:
+                if game.scoring is None:
+                    home_points = 0
+                    away_points = 0
+                else:
+                    home_points = game.scoring.home_points 
+                    away_points = game.scoring.away_points 
                 game_id = game.game_id
                 if game.broadcast is None:
                     broadcast_network = 'Unavailable'
@@ -128,6 +136,7 @@ class Transformer:
                 weather_data.append(weather_dto)
                 venue_data.append(venue_dto)
         print('Sucessfully transformed data!')
+        #print(game_data)
         
         return week_data, game_data, season_data, weeks_data, weather_data, venue_data
         
@@ -145,7 +154,8 @@ class Transformer:
     
     def set_game(self, games: list[GameDTO]) -> set[tuple]:
         records: set[tuple] = set()
-        for game in games: 
+        for game in games:
+
             records.add(
                 (
                     game.game_id,

@@ -1,46 +1,34 @@
-import React from "react";
-
-function ResultList({ results, venues }) {
-  if (!results || results.length === 0) {
-    return <p>No results to display.</p>;
-  }
-
-  // Create a venue lookup map
-  const venueLookup = venues ? venues.reduce((acc, venue) => {
-    acc[venue.venue_id] = `${venue.venue_name}, ${venue.venue_city}, ${venue.venue_state}`;
-    return acc;
-  }, {}) : {};
+const ResultList = ({ data }) => {
+  // Check if `data.game_data` exists and is an array
+  const gameData = data?.game_data || [];
 
   return (
-    <div className="result-list-container">
-      <h3 className="text-xl font-bold mb-4">Match Results</h3>
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="p-2 border">Home Team</th>
-            <th className="p-2 border">Away Team</th>
-            <th className="p-2 border">Venue</th>
-            <th className="p-2 border">Home Points</th>
-            <th className="p-2 border">Away Points</th>
+    <table className="table-auto border-collapse border border-gray-300">
+      <thead>
+        <tr>
+          <th className="p-2 border">Home Team</th>
+          <th className="p-2 border">Away Team</th>
+          <th className="p-2 border">Venue</th>
+          <th className="p-2 border text-center">Home Points</th>
+          <th className="p-2 border text-center">Away Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        {gameData.map((game, index) => (
+          <tr key={index} className="hover:bg-gray-50">
+            <td className="p-2 border">{game.home_team_name}</td>
+            <td className="p-2 border">{game.away_team_name}</td>
+            <td className="p-2 border">
+              {game.venue_id || 'No venue info'}
+            </td>
+            <td className="p-2 border text-center">{game.home_points}</td>
+            <td className="p-2 border text-center">{game.away_points}</td>
           </tr>
-        </thead>
-        <tbody>
-          {results.map((result, index) => (
-            <tr key={index} className="hover:bg-gray-50">
-              <td className="p-2 border">{result.home_team_name}</td>
-              <td className="p-2 border">{result.away_team_name}</td>
-              <td className="p-2 border">
-                {venueLookup[result.venue_id] || 'No venue info'}
-              </td>
-              <td className="p-2 border text-center">{result.home_points}</td>
-              <td className="p-2 border text-center">{result.away_points}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
-}
+};
 
 export default ResultList;
 

@@ -22,7 +22,7 @@ function Home() {
       const response = await axios.get(
         `http://127.0.0.1:5000/api/sports?${params.toString()}`, {
             });
-      
+         console.log(response.data);
       setResults(response.data);
     } catch (err) {
       console.error("Error:", err.toString());
