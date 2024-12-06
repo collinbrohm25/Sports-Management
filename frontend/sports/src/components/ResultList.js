@@ -1,15 +1,20 @@
 import React from "react";
 
 function ResultList({ results, venues }) {
-  if (!results || results.length === 0) {
+  if (!results || Object.keys(results).length === 0) {
     return <p>No results to display.</p>;
   }
 
+  // Convert JSON object to an array if `results` is not already an array
+  const resultsArray = Array.isArray(results) ? results : Object.values(results);
+
   // Create a venue lookup map
-  const venueLookup = venues ? venues.reduce((acc, venue) => {
-    acc[venue.venue_id] = `${venue.venue_name}, ${venue.venue_city}, ${venue.venue_state}`;
-    return acc;
-  }, {}) : {};
+  const venueLookup = venues
+    ? venues.reduce((acc, venue) => {
+        acc[venue.venue_id] = `${venue.venue_name}, ${venue.venue_city}, ${venue.venue_state}`;
+        return acc;
+      }, {})
+    : {};
 
   return (
     <div className="result-list-container">
@@ -25,12 +30,12 @@ function ResultList({ results, venues }) {
           </tr>
         </thead>
         <tbody>
-          {results.map((result, index) => (
+          {resultsArray.map((result, index) => (
             <tr key={index} className="hover:bg-gray-50">
               <td className="p-2 border">{result.home_team_name}</td>
               <td className="p-2 border">{result.away_team_name}</td>
               <td className="p-2 border">
-                {venueLookup[result.venue_id] || 'No venue info'}
+                {venueLookup[result.venue_id] || "No venue info"}
               </td>
               <td className="p-2 border text-center">{result.home_points}</td>
               <td className="p-2 border text-center">{result.away_points}</td>
@@ -43,6 +48,7 @@ function ResultList({ results, venues }) {
 }
 
 export default ResultList;
+
 
 
 /*
