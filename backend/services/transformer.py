@@ -5,10 +5,6 @@ from dtos.SportRadarDTO import WeekDTO, GameDTO, SeasonDTO, WeatherDTO, WeeksDTO
 from models.models import Week, BigSeason
 from schemas.schema import WeekSchema
 
-# week_entry = tuple[str, str, str]
-# game_entry = tuple[str, str, str, datetime, bool, str,
-#                        str, str, str, str, str, str, str, str,
-#                        str, int, str, str, str, int, int, int]
 class Transformer:
     def __init__(self):
         pass
@@ -33,7 +29,6 @@ class Transformer:
                 )
         game_data = []
         season_id = season_input.season.season_id
-        print(season_input)
         for game in week_input.week.games:
             if game.scoring is None:
                 away_points2 = 0
@@ -41,7 +36,6 @@ class Transformer:
             else:
                 away_points2 = game.scoring.away_points
                 home_points2 = game.scoring.home_points
-            print(game.scoring)
             game_dto = GameDTO(
                 game_id=game.game_id,
                 season_id=season_id,
@@ -95,7 +89,7 @@ class Transformer:
                 game_dto2 = GameDTO(
                     game_id=game.game_id,
                     season_id=season_id,
-                    week_id=week_data.week_id, 
+                    week_id=week_id, 
                     status=game.status,
                     scheduled=game.scheduled,
                     conference_game=game.conference_game,
@@ -116,6 +110,7 @@ class Transformer:
                     broadcast_network=broadcast_network
                     )
                 game_data.append(game_dto2)
+                
                 if game.weather:
                     condition = game.weather.condition
                     humidity = game.weather.humidity
@@ -136,7 +131,7 @@ class Transformer:
                 weather_data.append(weather_dto)
                 venue_data.append(venue_dto)
         print('Sucessfully transformed data!')
-        #print(game_data)
+        print(game_data)
         
         return week_data, game_data, season_data, weeks_data, weather_data, venue_data
         

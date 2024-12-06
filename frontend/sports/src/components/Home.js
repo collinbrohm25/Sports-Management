@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import ResultList from "./ResultList";
+import ResultList from "./ResultList.js";
 import "./Home.css";
 
 function Home() {

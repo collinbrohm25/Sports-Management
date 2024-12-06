@@ -36,7 +36,6 @@ def get_team_data():
                     week_row = week_result.fetchone()
                     if week_row:
                         week_id = week_row[0]
-                        print(week_id)
                     is_venue = True
                     venue_id_query = '''
                         SELECT venue_id 
@@ -64,18 +63,50 @@ def get_team_data():
                     game_result = conn.execute(text(game_query), {'team_name': team_name, 'week_id': week_id})
 
                 else:
-                    game_query = '''
-                        SELECT * 
+                    week_query = '''
+                       SELECT week_id 
+                        FROM week 
+                        WHERE CAST(week_num AS INTEGER) = :current_week
+                    '''
+                    week_result = conn.execute(text(week_query), {'current_week': current_week})
+                    week_row = week_result.fetchone()
+                    if week_row:
+                        week_id = week_row[0]
+                    is_venue = True
+                    venue_id_query = '''
+                        SELECT venue_id 
                         FROM game 
                         WHERE (home_team_name = :team_name OR away_team_name = :team_name) 
-                        AND (home_team_games_played = :week OR away_team_games_played = :week)
+                        AND week_id = :week_id
+                    '''
+                    venue_id_result = conn.execute(text(venue_id_query), {'team_name': team_name, 'week_id': week_id})
+                    venue_id_row = venue_id_result.fetchone()
+                    if venue_id_row:
+                        venue_id = venue_id_row[0]
+                    
+                    venue_query = '''
+                        SELECT * 
+                        FROM venue 
+                        WHERE venue_id = :venue_id
+                        '''
+                    game_query = '''
+                        SELECT distinct * 
+                        FROM game 
+                        WHERE (home_team_name = :team_name OR away_team_name = :team_name) 
+                        AND (home_team_games_played = :week OR away_team_games_played = :week) order by home_points desc
                     '''
                     game_result = conn.execute(text(game_query), {'team_name': team_name, 'week': week})
             else:
+
                 game_query = '''
-                            SELECT * 
-                            FROM game 
-                            WHERE (home_team_name = :team_name OR away_team_name = :team_name) 
+                            SELECT *
+                            FROM (
+                                SELECT DISTINCT ON (game_id) *
+                                FROM game
+                                WHERE (home_team_name = :team_name OR away_team_name = :team_name)
+                                ORDER BY game_id, home_points DESC
+                            ) subquery
+                            ORDER BY home_points DESC;
                             
                         '''
                 game_result = conn.execute(text(game_query), {'team_name': team_name})
@@ -91,7 +122,7 @@ def get_team_data():
         else :
             data = [dict(row) for row in game_result.mappings()]
             print(data)
-        return jsonify({"game_data": data})
+            return jsonify({"game_data": data})
 
 
 if __name__ == '__main__':

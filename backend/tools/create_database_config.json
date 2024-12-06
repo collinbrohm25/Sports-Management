@@ -13,7 +13,7 @@
             "week_num": "TEXT"
         },
         "game": {
-            "game_id": "TEXT PRIMARY KEY ",
+            "game_id": "TEXT ",
             "season_id": "TEXT",
             "week_id": "TEXT",
             "status": "TEXT",
